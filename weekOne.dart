@@ -47,9 +47,61 @@ void main() {
     1. final - run time constant. can be initialized in runtime.
     2. const - compile time constant. has to be initialized during compilaton.
   */
-  final fin = stdin.readLineSync();
-  print(fin);
+  // final fin = stdin.readLineSync();
+  // print(fin);
 
-  const con = 5;
+  const con = 3.1415;
   print(con);
+
+  /* 
+    Operators: Full list: https://dart.dev/language/operators
+    Dart specific operators:
+      Arithmatic Ops
+      - '/'	Divide
+      - '~/'	Divide, returning an integer result
+
+      Type Test Ops
+      - 'as'	Typecast (also used to specify library prefixes) // to be revisited after learning oop in dart
+      - 'is'	True if the object has the specified type
+      - 'is!'	True if the object doesn’t have the specified typ
+
+      Assignment Ops
+      - '??=' assign if variable is null
+
+  */
+  var number3 = 5 / 2;
+  number3 += 5;
+  print(number3);
+  var result = '5/2 = ${5 ~/ 2} r ${5 % 2}';
+  print(result);
+
+  if (number3 is double) {
+    print(number3);
+  }
+
+  var nullVar;
+  nullVar ??=
+      15; // assigns 15 to nullVar because nullVar was null before the assignment
+  print(nullVar);
+  /*
+    Conditional expressions
+      - expr1 ?? expr2
+        If expr1 is non-null, returns its value; otherwise, evaluates and returns the value of expr2.
+   */
+  print(playerName('SELISE'));
+  print(playerName(null));
+
+  // cascade and other operators to be revisited later
 }
+
+String playerName(String? name) => name ?? 'Guest';
+
+/* Longer version of ^^this code
+  String playerName(String? name) {
+    if (name != null) {
+      return name;
+    } else {
+      return 'Guest';
+    }
+  }
+*/
