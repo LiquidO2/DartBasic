@@ -82,7 +82,7 @@ void main() {
   print('before: ${rTree._Tree}, length: ${rTree._Tree.length}');
   rTree.printTreeIO();
   print("");
-  rTree.deleteValues((int value) => value > 50);
+  rTree.deleteValues((int value) => value < 50);
   print('after: ${rTree._Tree}, length: ${rTree._Tree.length}');
   rTree.printTreeIO();
   print("");
