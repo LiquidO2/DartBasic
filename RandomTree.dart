@@ -24,7 +24,7 @@ class RandomTree {
       "parent": parent
     });
     int currentIndex = _Tree.length - 1;
-    //print(currentIndex);
+
     _Tree[currentIndex]["left"] = (leftDepth != 0)
         ? _generateTree(parent: currentIndex, depth: leftDepth)
         : null;
@@ -38,7 +38,6 @@ class RandomTree {
   }
 
   deleteValues({int index = 0}) {
-    //print('index: $index length: ${Tree.length}');
     while (index < _Tree.length && _Tree[index]["value"] < 50) {
       //replace current node's value with last node's value
       int lastIndex = _Tree.length - 1;
@@ -48,10 +47,8 @@ class RandomTree {
       if (_Tree[lastIndex]["parent"] != null) {
         int parentIndex = _Tree[lastIndex]["parent"];
         if (_Tree[parentIndex]["left"] == lastIndex) {
-          //print("left: ${Tree[parentIndex]["left"]} lastindex: $lastIndex");
           _Tree[parentIndex]["left"] = null;
         } else {
-          //print("right: ${Tree[parentIndex]["right"]} lastindex: $lastIndex");
           _Tree[parentIndex]["right"] = null;
         }
       }
@@ -62,15 +59,18 @@ class RandomTree {
 
     if ((index < _Tree.length) &&
         (_Tree[index]["left"] != null) &&
-        (_Tree[index]["left"] < _Tree.length))
+        (_Tree[index]["left"] < _Tree.length)) // delete values from left tree
       deleteValues(index: _Tree[index]["left"]);
     if ((index < _Tree.length) &&
         (_Tree[index]["right"] != null) &&
         (_Tree[index]["right"] < _Tree.length))
-      deleteValues(index: _Tree[index]["right"]);
+      deleteValues(
+          index: _Tree[index]["right"]); // delete values from right tree
   }
 
   printTreeIO({int index = 0}) {
+    if (_Tree.isEmpty) return; // handling empty tree
+
     if (_Tree[index]["left"] != null) printTreeIO(index: _Tree[index]["left"]);
     stdout.write('${_Tree[index]["value"]} ');
     if (_Tree[index]["right"] != null)
@@ -83,6 +83,8 @@ void main() {
   print('before: ${rTree._Tree}, length: ${rTree._Tree.length}');
   rTree.printTreeIO();
   print("");
-  // rTree.deleteValues();
-  // print('after: ${rTree._Tree}, length: ${rTree._Tree.length}');
+  rTree.deleteValues();
+  print('after: ${rTree._Tree}, length: ${rTree._Tree.length}');
+  rTree.printTreeIO();
+  print("");
 }
