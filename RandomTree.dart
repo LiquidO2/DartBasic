@@ -7,13 +7,12 @@ class RandomTree {
   List _Tree = [];
 
   RandomTree({int maxDepth = 10, int maxWeight = 100}) {
-    this._maxDepth = maxDepth; //1 + Random().nextInt(maxDepth);
+    this._maxDepth = 1 + Random().nextInt(maxDepth);
     this._maxWeight = maxWeight;
     _generateTree(maxDepth: _maxDepth);
   }
 
-  int? _generateFTree(
-      {int? parent = null, required int maxDepth, int depth = 0}) {
+  int? _generateFTree({int? parent = null, required int maxDepth}) {
     int leftDepth = maxDepth - 1; //Random().nextInt(maxDepth);
     int rightDepth = maxDepth - 1; //Random().nextInt(maxDepth);
     _Tree.add({
@@ -36,8 +35,7 @@ class RandomTree {
       return currentIndex;
   }
 
-  int? _generateTree(
-      {int? parent = null, required int maxDepth, int depth = 0}) {
+  int? _generateTree({int? parent = null, required int maxDepth}) {
     int leftDepth = Random().nextInt(maxDepth);
     int rightDepth = Random().nextInt(maxDepth);
     _Tree.add({
@@ -93,13 +91,16 @@ class RandomTree {
   }
 
   int calculateDepth({int currentIndex = 0}) {
-    if (_Tree == []) return 0;
+    if (_Tree.isEmpty) return 0;
+
     int leftDepth = (_Tree[currentIndex]["left"] == null)
         ? 0
         : calculateDepth(currentIndex: _Tree[currentIndex]["left"]);
+
     int rightDepth = (_Tree[currentIndex]["right"] == null)
         ? 0
         : calculateDepth(currentIndex: _Tree[currentIndex]["right"]);
+
     return 1 + max(leftDepth, rightDepth);
   }
 
@@ -137,32 +138,36 @@ class RandomTree {
           maxI = max(setEIndex(restructuredTree, 2 * i + 2, totalItems), maxI);
         }
       }
-
-      // if ((2 * i + 1) < totalItems) {
-      //   if (_Tree[restructuredTree[i]]['left'] == null) {
-      //     maxI = max(setEIndex(restructuredTree, 2 * i + 1, totalItems), maxI);
-      //   } else {
-      //     restructuredTree[2 * i + 1] = _Tree[j]['left'];
-      //   }
-      // }
-      // if ((2 * i + 2) < totalItems) {
-      //   if (_Tree[j]['right'] == null) {
-      //     maxI = max(setEIndex(restructuredTree, 2 * i + 1, totalItems), maxI);
-      //   } else {
-      //     restructuredTree[2 * i + 2] = _Tree[j]['right'];
-      //   }
-      // }
-      // j++;
-      // i = maxI;
     }
+
+    for (int i = 0; i < totalItems; i++) {
+      if (restructuredTree[i] >= 0)
+        restructuredTree[i] = _Tree[restructuredTree[i]]["value"];
+      else
+        restructuredTree[i] = null;
+    }
+
     return restructuredTree;
   }
 
   printTree() {
     int depth = calculateDepth();
     if (depth == 0) return;
-    //List temp = restructure(depth);
-    print(restructure(depth));
+    List temp = restructure(depth);
+    int index = 0;
+    for (int i = 0; i < depth; i++) {
+      for (int j = 0; j < (pow(2, i)); j++) {
+        stdout.write("  " * ((pow(2, depth - 1 - i) as int) - 1));
+        if (temp[index] != null)
+          stdout.write(temp[index].toString().padLeft(2, '0'));
+        else
+          stdout.write("  ");
+        stdout.write("  " * ((pow(2, depth - 1 - i) as int)));
+        index++;
+      }
+      print("");
+      print("");
+    }
   }
 
   printTreeIO({int index = 0}) {
@@ -178,12 +183,14 @@ class RandomTree {
 void main() {
   RandomTree rTree = RandomTree();
   //print('before: ${rTree._Tree}, length: ${rTree._Tree.length}');
-  rTree.printTreeIO();
+  print("OG Tree: ");
+  rTree.printTree();
   print("");
-  //rTree.deleteValues((int value) => value < 50);
+  rTree.deleteValues((int value) => value < 50);
   //print('after: ${rTree._Tree}, length: ${rTree._Tree.length}');
   //rTree.printTreeIO();
-  print(rTree.calculateDepth());
+  print("Modified Tree: ");
+  //print(rTree.calculateDepth());
   rTree.printTree();
   print("");
 }
