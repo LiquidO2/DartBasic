@@ -1,20 +1,24 @@
+import 'dart:html';
+import 'dart:indexed_db';
 import 'dart:io';
 import 'dart:math';
 
 class RandomTree {
-  int _Depth = 10;
+  int _maxDepth = 10;
   int _maxWeight = 100;
   List _Tree = [];
+  //int _depth = 0;
 
-  RandomTree({int maxDepth = 10, int maxWeight = 100}) {
-    this._Depth = 1 + Random().nextInt(maxDepth);
+  RandomTree({int maxDepth = 5, int maxWeight = 100}) {
+    this._maxDepth = maxDepth; //1 + Random().nextInt(maxDepth);
     this._maxWeight = maxWeight;
-    _generateTree(depth: _Depth);
+    _generateFTree(maxDepth: _maxDepth);
   }
 
-  int? _generateTree({int? parent = null, required int depth}) {
-    int leftDepth = Random().nextInt(depth);
-    int rightDepth = Random().nextInt(depth);
+  int? _generateFTree(
+      {int? parent = null, required int maxDepth, int depth = 0}) {
+    int leftDepth = maxDepth - 1; //Random().nextInt(maxDepth);
+    int rightDepth = maxDepth - 1; //Random().nextInt(maxDepth);
     _Tree.add({
       "left": null,
       "value": Random().nextInt(_maxWeight),
@@ -24,10 +28,34 @@ class RandomTree {
     int currentIndex = _Tree.length - 1;
 
     _Tree[currentIndex]["left"] = (leftDepth != 0)
-        ? _generateTree(parent: currentIndex, depth: leftDepth)
+        ? _generateFTree(parent: currentIndex, maxDepth: leftDepth)
         : null;
     _Tree[currentIndex]["right"] = (rightDepth != 0)
-        ? _generateTree(parent: currentIndex, depth: rightDepth)
+        ? _generateFTree(parent: currentIndex, maxDepth: rightDepth)
+        : null;
+    if (parent == null)
+      return null;
+    else
+      return currentIndex;
+  }
+
+  int? _generateTree(
+      {int? parent = null, required int maxDepth, int depth = 0}) {
+    int leftDepth = Random().nextInt(maxDepth);
+    int rightDepth = Random().nextInt(maxDepth);
+    _Tree.add({
+      "left": null,
+      "value": Random().nextInt(_maxWeight),
+      "right": null,
+      "parent": parent
+    });
+    int currentIndex = _Tree.length - 1;
+
+    _Tree[currentIndex]["left"] = (leftDepth != 0)
+        ? _generateTree(parent: currentIndex, maxDepth: leftDepth)
+        : null;
+    _Tree[currentIndex]["right"] = (rightDepth != 0)
+        ? _generateTree(parent: currentIndex, maxDepth: rightDepth)
         : null;
     if (parent == null)
       return null;
@@ -67,6 +95,39 @@ class RandomTree {
           index: _Tree[index]["right"]); // delete values from right tree
   }
 
+  int calculateDepth({int currentIndex = 0}) {
+    if (_Tree == []) return 0;
+    int leftDepth = (_Tree[currentIndex]["left"] == null)
+        ? 0
+        : calculateDepth(currentIndex: _Tree[currentIndex]["left"]);
+    int rightDepth = (_Tree[currentIndex]["right"] == null)
+        ? 0
+        : calculateDepth(currentIndex: _Tree[currentIndex]["right"]);
+    return 1 + max(leftDepth, rightDepth);
+  }
+
+  List restructure(int depth) {
+    int totalItems = (pow(2, depth) - 1) as int;
+    // generate null list
+    List restructuredTree = List<int?>.filled(totalItems, null);
+
+    // set Index
+    
+    restructuredTree[0] = 0;
+    _Tree.forEach((element) {
+      
+    })
+
+    return restructuredTree;
+  }
+
+  printTree() {
+    int depth = calculateDepth();
+    if (depth == 0) return;
+    //List temp = restructure(depth);
+    print(restructure(depth));
+  }
+
   printTreeIO({int index = 0}) {
     if (_Tree.isEmpty) return; // handling empty tree
 
@@ -79,11 +140,13 @@ class RandomTree {
 
 void main() {
   RandomTree rTree = RandomTree();
-  print('before: ${rTree._Tree}, length: ${rTree._Tree.length}');
+  //print('before: ${rTree._Tree}, length: ${rTree._Tree.length}');
   rTree.printTreeIO();
   print("");
-  rTree.deleteValues((int value) => value < 50);
-  print('after: ${rTree._Tree}, length: ${rTree._Tree.length}');
-  rTree.printTreeIO();
+  //rTree.deleteValues((int value) => value < 50);
+  //print('after: ${rTree._Tree}, length: ${rTree._Tree.length}');
+  //rTree.printTreeIO();
+  print(rTree.calculateDepth());
+  rTree.printTree();
   print("");
 }
