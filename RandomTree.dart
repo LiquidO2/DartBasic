@@ -1,5 +1,3 @@
-import 'dart:html';
-import 'dart:indexed_db';
 import 'dart:io';
 import 'dart:math';
 
@@ -7,12 +5,11 @@ class RandomTree {
   int _maxDepth = 10;
   int _maxWeight = 100;
   List _Tree = [];
-  //int _depth = 0;
 
-  RandomTree({int maxDepth = 5, int maxWeight = 100}) {
+  RandomTree({int maxDepth = 10, int maxWeight = 100}) {
     this._maxDepth = maxDepth; //1 + Random().nextInt(maxDepth);
     this._maxWeight = maxWeight;
-    _generateFTree(maxDepth: _maxDepth);
+    _generateTree(maxDepth: _maxDepth);
   }
 
   int? _generateFTree(
@@ -106,18 +103,58 @@ class RandomTree {
     return 1 + max(leftDepth, rightDepth);
   }
 
+  int setEIndex(List list, int index, int totalItems) {
+    list[index] = -1;
+    int rIndex = index;
+    if ((2 * index + 1) < totalItems)
+      rIndex = max(setEIndex(list, (2 * index + 1), totalItems), rIndex);
+    if ((2 * index + 2) < totalItems)
+      rIndex = max(setEIndex(list, (2 * index + 2), totalItems), rIndex);
+    return rIndex;
+  }
+
   List restructure(int depth) {
     int totalItems = (pow(2, depth) - 1) as int;
     // generate null list
     List restructuredTree = List<int?>.filled(totalItems, null);
 
     // set Index
-    
-    restructuredTree[0] = 0;
-    _Tree.forEach((element) {
-      
-    })
 
+    restructuredTree[0] = 0;
+    //int j = 0;
+    for (int i = 0; i < totalItems; i++) {
+      int maxI = i;
+      //print('i = $i');
+      if (restructuredTree[i] >= 0) {
+        if (_Tree[restructuredTree[i]]["left"] != null) {
+          restructuredTree[2 * i + 1] = _Tree[restructuredTree[i]]["left"];
+        } else if (2 * i + 1 < totalItems) {
+          maxI = max(setEIndex(restructuredTree, 2 * i + 1, totalItems), maxI);
+        }
+        if (_Tree[restructuredTree[i]]["right"] != null) {
+          restructuredTree[2 * i + 2] = _Tree[restructuredTree[i]]["right"];
+        } else if (2 * i + 2 < totalItems) {
+          maxI = max(setEIndex(restructuredTree, 2 * i + 2, totalItems), maxI);
+        }
+      }
+
+      // if ((2 * i + 1) < totalItems) {
+      //   if (_Tree[restructuredTree[i]]['left'] == null) {
+      //     maxI = max(setEIndex(restructuredTree, 2 * i + 1, totalItems), maxI);
+      //   } else {
+      //     restructuredTree[2 * i + 1] = _Tree[j]['left'];
+      //   }
+      // }
+      // if ((2 * i + 2) < totalItems) {
+      //   if (_Tree[j]['right'] == null) {
+      //     maxI = max(setEIndex(restructuredTree, 2 * i + 1, totalItems), maxI);
+      //   } else {
+      //     restructuredTree[2 * i + 2] = _Tree[j]['right'];
+      //   }
+      // }
+      // j++;
+      // i = maxI;
+    }
     return restructuredTree;
   }
 
