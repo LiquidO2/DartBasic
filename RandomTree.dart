@@ -2,13 +2,11 @@ import 'dart:io';
 import 'dart:math';
 
 class RandomTree {
-  //int _maxNodes = 2;
   int _Depth = 10;
   int _maxWeight = 100;
   List _Tree = [];
 
   RandomTree({int maxDepth = 10, int maxWeight = 100}) {
-    //this._maxNodes = maxNodes;
     this._Depth = 1 + Random().nextInt(maxDepth);
     this._maxWeight = maxWeight;
     _generateTree(depth: _Depth);
@@ -37,8 +35,8 @@ class RandomTree {
       return currentIndex;
   }
 
-  deleteValues({int index = 0}) {
-    while (index < _Tree.length && _Tree[index]["value"] < 50) {
+  deleteValues(Function condition, {int index = 0}) {
+    while (index < _Tree.length && condition(_Tree[index]["value"])) {
       //replace current node's value with last node's value
       int lastIndex = _Tree.length - 1;
       _Tree[index]["value"] = _Tree[lastIndex]["value"];
@@ -59,12 +57,13 @@ class RandomTree {
 
     if ((index < _Tree.length) &&
         (_Tree[index]["left"] != null) &&
-        (_Tree[index]["left"] < _Tree.length)) // delete values from left tree
-      deleteValues(index: _Tree[index]["left"]);
+        (_Tree[index]["left"] < _Tree.length))
+      deleteValues(condition,
+          index: _Tree[index]["left"]); // delete values from left tree
     if ((index < _Tree.length) &&
         (_Tree[index]["right"] != null) &&
         (_Tree[index]["right"] < _Tree.length))
-      deleteValues(
+      deleteValues(condition,
           index: _Tree[index]["right"]); // delete values from right tree
   }
 
@@ -83,7 +82,7 @@ void main() {
   print('before: ${rTree._Tree}, length: ${rTree._Tree.length}');
   rTree.printTreeIO();
   print("");
-  rTree.deleteValues();
+  rTree.deleteValues((int value) => value > 50);
   print('after: ${rTree._Tree}, length: ${rTree._Tree.length}');
   rTree.printTreeIO();
   print("");
