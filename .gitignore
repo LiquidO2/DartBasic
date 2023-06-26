@@ -25,3 +25,8 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+#Practice files
+dartPad.dart
+*old*
+.DS_Store
