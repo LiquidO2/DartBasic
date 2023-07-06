@@ -4,7 +4,7 @@ import 'dart:math';
 class RandomTree {
   int _maxDepth = 10;
   int _maxWeight = 100;
-  List _Tree = [];
+  List _Tree = []; // list example
 
   RandomTree({int maxDepth = 10, int maxWeight = 100}) {
     this._maxDepth = 1 + Random().nextInt(maxDepth);
@@ -12,28 +12,29 @@ class RandomTree {
     _generateTree(maxDepth: _maxDepth);
   }
 
-  int? _generateFTree({int? parent = null, required int maxDepth}) {
-    int leftDepth = maxDepth - 1; //Random().nextInt(maxDepth);
-    int rightDepth = maxDepth - 1; //Random().nextInt(maxDepth);
-    _Tree.add({
-      "left": null,
-      "value": Random().nextInt(_maxWeight),
-      "right": null,
-      "parent": parent
-    });
-    int currentIndex = _Tree.length - 1;
+  // int? _generateFTree({int? parent = null, required int maxDepth}) {
+  //   int leftDepth = maxDepth - 1; //Random().nextInt(maxDepth);
+  //   int rightDepth = maxDepth - 1; //Random().nextInt(maxDepth);
+  //   _Tree.add({
+  //     // map example
+  //     "left": null,
+  //     "value": Random().nextInt(_maxWeight),
+  //     "right": null,
+  //     "parent": parent
+  //   });
+  //   int currentIndex = _Tree.length - 1;
 
-    _Tree[currentIndex]["left"] = (leftDepth != 0)
-        ? _generateFTree(parent: currentIndex, maxDepth: leftDepth)
-        : null;
-    _Tree[currentIndex]["right"] = (rightDepth != 0)
-        ? _generateFTree(parent: currentIndex, maxDepth: rightDepth)
-        : null;
-    if (parent == null)
-      return null;
-    else
-      return currentIndex;
-  }
+  //   _Tree[currentIndex]["left"] = (leftDepth != 0)
+  //       ? _generateFTree(parent: currentIndex, maxDepth: leftDepth)
+  //       : null;
+  //   _Tree[currentIndex]["right"] = (rightDepth != 0)
+  //       ? _generateFTree(parent: currentIndex, maxDepth: rightDepth)
+  //       : null;
+  //   if (parent == null)
+  //     return null;
+  //   else
+  //     return currentIndex;
+  // }
 
   int? _generateTree({int? parent = null, required int maxDepth}) {
     int leftDepth = Random().nextInt(maxDepth);

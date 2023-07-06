@@ -42,6 +42,35 @@ void main() {
   number2 = 5;
   print(number2);
 
+  var list = [1, 2, 3];
+  print('list: ${list[1]}');
+
+  var set = {2.3, 2.3, 5, 9};
+  print('set: ${set.elementAt(1)}'); // second 2.3 is completely ignored.
+
+  var gifts = {
+    // Key:    Value
+    'first': 'partridge',
+    'second': 'turtledoves',
+    'fifth': 'golden rings'
+  };
+
+  print('map: ${gifts["first"]}');
+
+  var promoActive = false;
+  var nav = [
+    'Home',
+    'Furniture',
+    'Plants',
+    if (promoActive) 'Outlet'
+  ]; // if condition to set an element
+
+  print('list with condition: ${nav}');
+
+  var listOfInts = [1, 2, 3];
+  var listOfStrings = ['userid: 0', for (var i in listOfInts) 'userid: $i'];
+  print('for within list: $listOfStrings');
+
   /* 
     Final & Constant
     1. final - run time constant. can be initialized in runtime.
@@ -105,3 +134,4 @@ String playerName(String? name) => name ?? 'Guest';
     }
   }
 */
+
