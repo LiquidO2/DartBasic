@@ -42,13 +42,13 @@ void main() {
   number2 = 5;
   print(number2);
 
-  var list = [1, 2, 3];
+  var list = [1, 2, 3];   // using var is not a good practice, always define type if possible.
   print('list: ${list[1]}');
 
-  var set = {2.3, 2.3, 5, 9};
+  double set = {2.3, 2.3, 5, 9};
   print('set: ${set.elementAt(1)}'); // second 2.3 is completely ignored.
 
-  var gifts = {
+  Map<'String', 'String'> gifts = {
     // Key:    Value
     'first': 'partridge',
     'second': 'turtledoves',
@@ -57,8 +57,8 @@ void main() {
 
   print('map: ${gifts["first"]}');
 
-  var promoActive = false;
-  var nav = [
+  bool promoActive = false;
+  List<String> nav = [
     'Home',
     'Furniture',
     'Plants',
@@ -67,8 +67,8 @@ void main() {
 
   print('list with condition: ${nav}');
 
-  var listOfInts = [1, 2, 3];
-  var listOfStrings = ['userid: 0', for (var i in listOfInts) 'userid: $i'];
+  List<int> listOfInts = [1, 2, 3];
+  List<String> listOfStrings = ['userid: 0', for (var i in listOfInts) 'userid: $i'];
   print('for within list: $listOfStrings');
 
   /* 
@@ -98,32 +98,42 @@ void main() {
       - '??=' assign if variable is null
 
   */
-  var number3 = 5 / 2;
+  double number3 = 5 / 2;
   number3 += 5;
   print(number3);
-  var result = '5/2 = ${5 ~/ 2} r ${5 % 2}';
+  String result = '5/2 = ${5 ~/ 2}, remainder ${5 % 2}';
   print(result);
 
   if (number3 is double) {
     print(number3);
   }
 
-  var nullVar;
-  nullVar ??=
-      15; // assigns 15 to nullVar because nullVar was null before the assignment
+  int? nullVar;   // made nullable by force using '?'
+  int? nullVar;
+  nullVar ??= 15; // assigns 15 to nullVar because nullVar was null before the assignment
   print(nullVar);
   /*
     Conditional expressions
       - expr1 ?? expr2
         If expr1 is non-null, returns its value; otherwise, evaluates and returns the value of expr2.
    */
-  print(playerName('SELISE'));
-  print(playerName(null));
+
+  double? nullDouble;
+  double assignValue = nullDouble ?? 5/2; // assigns 5/2 because nullDouble is null
+
+  print(assignValue);
+  nullDouble??=4.5;  // assigns 4.5 to nullDouble because it is null
+
+  assignValue = nullDouble ?? 5/2;   // assigns nullDouble (4.5) to assignValue because nullDouble is no longer null
+  print(assignValue);
+  
+  print(playerName('SELISE'));   // prints 'SELISE' because we are sending an String
+  print(playerName(null));       // prints 'Guest' because we are sending null
 
   // cascade and other operators to be revisited later
 }
 
-String playerName(String? name) => name ?? 'Guest';
+String playerName(String? name) => name ?? 'Guest';    // returns Guest if name is null, otherwise returns name.
 
 /* Longer version of ^^this code
   String playerName(String? name) {
